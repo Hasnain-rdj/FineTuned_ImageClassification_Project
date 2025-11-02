@@ -46,10 +46,44 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+def download_model_from_release():
+    """Download model from GitHub release if not present locally."""
+    model_dir = Path(__file__).parent / 'final_model'
+    model_path = model_dir / 'final_model.pkl'
+    
+    if model_path.exists():
+        return model_path
+    
+    # Create directory if it doesn't exist
+    model_dir.mkdir(exist_ok=True)
+    
+    # GitHub release URL
+    release_url = "https://github.com/Hasnain-rdj/FineTuned_ImageClassification_Project/releases/download/v1.0.0/final_model.pkl"
+    
+    st.info("📥 Downloading model from GitHub Release (this may take a few minutes - ~340MB)...")
+    
+    try:
+        import urllib.request
+        
+        # Download with progress
+        def reporthook(count, block_size, total_size):
+            percent = int(count * block_size * 100 / total_size)
+            if count % 50 == 0:  # Update every 50 blocks to avoid too many updates
+                st.text(f"Download progress: {percent}%")
+        
+        urllib.request.urlretrieve(release_url, model_path, reporthook)
+        st.success("✅ Model downloaded successfully!")
+        return model_path
+    
+    except Exception as e:
+        st.error(f"Failed to download model: {str(e)}")
+        st.error("Please download manually from: https://github.com/Hasnain-rdj/FineTuned_ImageClassification_Project/releases")
+        st.stop()
+
 @st.cache_resource
 def load_model():
     """Load the fine-tuned ViT model from the final_model directory."""
-    model_path = Path(__file__).parent / 'final_model' / 'final_model.pkl'
+    model_path = download_model_from_release()
     
     if not model_path.exists():
         st.error(f"Model file not found at {model_path}")

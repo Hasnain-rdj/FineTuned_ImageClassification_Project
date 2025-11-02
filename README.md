@@ -4,7 +4,7 @@ A Vision Transformer (ViT) model fine-tuned on the Food-101 dataset using LoRA (
 
 ## 🚀 Live Demo
 
-[Try it on Streamlit Cloud](#) *(link will be added after deployment)*
+[Try it on Streamlit Cloud](https://your-app-url.streamlit.app) *(link will be updated after deployment)*
 
 ## 📋 Features
 
@@ -19,8 +19,8 @@ A Vision Transformer (ViT) model fine-tuned on the Food-101 dataset using LoRA (
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
-cd YOUR_REPO_NAME
+git clone https://github.com/Hasnain-rdj/FineTuned_ImageClassification_Project.git
+cd FineTuned_ImageClassification_Project
 ```
 
 ### 2. Install Dependencies
@@ -31,10 +31,12 @@ pip install -r requirements.txt
 
 ### 3. Download the Model
 
-**Important:** The model file is too large for Git, so it's hosted as a GitHub Release.
+**Good News!** The app will automatically download the model from GitHub Release on first run.
 
-1. Go to [Releases](https://github.com/YOUR_USERNAME/YOUR_REPO_NAME/releases)
-2. Download `final_model.pkl` from the latest release
+Alternatively, you can manually download:
+
+1. Go to [Releases](https://github.com/Hasnain-rdj/FineTuned_ImageClassification_Project/releases)
+2. Download `final_model.pkl` from the latest release (v1.0.0)
 3. Create a `final_model` folder in the project directory
 4. Place `final_model.pkl` inside the `final_model` folder
 
@@ -89,59 +91,28 @@ Task3/
 └── README.md                 # This file
 ```
 
-## � Deploy to Streamlit Cloud
+## 🌐 Deploy to Streamlit Cloud
 
-### Prerequisites
-1. Push your code to GitHub (without the model file)
-2. Upload the model as a GitHub Release (see instructions below)
+### Quick Deploy Steps
 
-### Deployment Steps
 1. Go to [share.streamlit.io](https://share.streamlit.io)
-2. Connect your GitHub repository
-3. Set the main file path: `streamlit_app.py`
-4. Deploy!
+2. Sign in with your GitHub account
+3. Click **"New app"**
+4. Fill in:
+   - **Repository**: `Hasnain-rdj/FineTuned_ImageClassification_Project`
+   - **Branch**: `main`
+   - **Main file path**: `streamlit_app.py`
+5. Click **"Deploy!"**
 
-The model will need to be manually downloaded from the release and placed in the `final_model/` folder.
+The app will automatically download the model from your GitHub release on first launch!
 
-## 📦 Creating a GitHub Release with the Model
+## 📦 GitHub Release Info
 
-### Step-by-Step Instructions:
+The trained model is available as a GitHub Release to keep the repository size small.
 
-1. **Commit and Push Your Code** (without model files)
-   ```bash
-   git add .
-   git commit -m "Initial commit: Food-101 classifier"
-   git push origin main
-   ```
-
-2. **Create a Release on GitHub:**
-   - Go to your repository on GitHub
-   - Click on "Releases" (right sidebar)
-   - Click "Create a new release"
-   - Tag version: `v1.0.0`
-   - Release title: `Food-101 ViT Model v1.0`
-   - Description:
-     ```
-     Fine-tuned Vision Transformer model for Food-101 classification
-     
-     Model Details:
-     - Base: google/vit-base-patch16-224
-     - Method: LoRA fine-tuning
-     - Dataset: 20% of Food-101
-     - Size: ~340 MB
-     
-     Download `final_model.pkl` and place it in a `final_model/` folder 
-     in the project root directory.
-     ```
-
-3. **Upload the Model File:**
-   - Drag and drop `final_model/final_model.pkl` to the release assets
-   - Click "Publish release"
-
-4. **The model will be available at:**
-   ```
-   https://github.com/YOUR_USERNAME/YOUR_REPO/releases/download/v1.0.0/final_model.pkl
-   ```
+- **Release URL**: https://github.com/Hasnain-rdj/FineTuned_ImageClassification_Project/releases/tag/v1.0.0
+- **Model File**: `final_model.pkl` (~340 MB)
+- **Auto-download**: The Streamlit app automatically downloads the model on first run
 
 ## 💡 Usage
 
@@ -149,10 +120,11 @@ The model will need to be manually downloaded from the release and placed in the
 2. **Classify:** Click the "🔍 Classify Image" button
 3. **View Results:** See top predictions with confidence scores
 
-## � Troubleshooting
+## 🔧 Troubleshooting
 
-**Model not found error:**
-- Download the model from [Releases](https://github.com/YOUR_USERNAME/YOUR_REPO_NAME/releases)
+**Model download fails:**
+- Check your internet connection
+- Manually download from [Releases](https://github.com/Hasnain-rdj/FineTuned_ImageClassification_Project/releases)
 - Place it in the `final_model/` folder
 
 **Out of memory:**
