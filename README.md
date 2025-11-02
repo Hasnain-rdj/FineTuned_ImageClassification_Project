@@ -4,7 +4,7 @@ A Vision Transformer (ViT) model fine-tuned on the Food-101 dataset using LoRA (
 
 ## 🚀 Live Demo
 
-[Try it on Streamlit Cloud](https://your-app-url.streamlit.app) *(link will be updated after deployment)*
+[Try it on Streamlit Cloud](https://imgclassifierai.streamlit.app/)
 
 ## 📋 Features
 
