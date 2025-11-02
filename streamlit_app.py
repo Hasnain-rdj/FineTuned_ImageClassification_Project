@@ -112,7 +112,6 @@ def load_model():
     try:
         # Set device first - force CPU for local machine
         device = torch.device('cpu')
-        st.info(f"Loading model on {device.type.upper()} (this may take a minute...)")
         
         # Load model data with CPU mapping
         import warnings
@@ -145,7 +144,6 @@ def load_model():
         from transformers import ViTForImageClassification
         from peft import LoraConfig, get_peft_model
         
-        st.info("Downloading base model (first time only)...")
         model = ViTForImageClassification.from_pretrained(
             'google/vit-base-patch16-224',
             num_labels=len(classes),
@@ -166,9 +164,6 @@ def load_model():
         
         model = get_peft_model(model, lora_config)
         
-        # Load the trained weights
-        st.info("Loading trained weights...")
-        
         # Move state dict tensors to CPU if needed
         state_dict = model_data['model_state']
         cpu_state_dict = {}
@@ -182,8 +177,6 @@ def load_model():
         
         model.eval()
         model.to(device)
-        
-        st.success("Model loaded successfully!")
         
         return model, processor, id2label, classes, test_accuracy, device
     
@@ -239,9 +232,23 @@ def main():
         unsafe_allow_html=True
     )
     
-    # Load model
-    with st.spinner('Loading model... This may take a moment.'):
-        model, processor, id2label, classes, test_accuracy, device = load_model()
+    # Load model with temporary status messages
+    loading_placeholder = st.empty()
+    
+    with loading_placeholder.container():
+        with st.spinner('🔄 Loading model... This may take a moment on first run.'):
+            model, processor, id2label, classes, test_accuracy, device = load_model()
+        
+        # Show success message
+        success_msg = st.success("✅ Model loaded successfully!")
+        
+        # Auto-hide success message after 15 seconds
+        import time
+        time.sleep(15)
+        success_msg.empty()
+    
+    # Clear the loading placeholder to clean the dashboard
+    loading_placeholder.empty()
     
     # Sidebar
     with st.sidebar:
@@ -254,7 +261,6 @@ def main():
             **Model Details:**
             - Base Model: `google/vit-base-patch16-224`
             - Number of Classes: {len(classes)}
-            - Test Accuracy: {test_accuracy*100:.2f}%
             - Device: {device.type.upper()}
             
             **Fine-tuning Method:**
