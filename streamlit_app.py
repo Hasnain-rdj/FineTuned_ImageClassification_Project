@@ -57,27 +57,47 @@ def download_model_from_release():
     # Create directory if it doesn't exist
     model_dir.mkdir(exist_ok=True)
     
-    # GitHub release URL
-    release_url = "https://github.com/Hasnain-rdj/FineTuned_ImageClassification_Project/releases/download/v1.0.0/final_model.pkl"
+    # GitHub release information
+    GITHUB_REPO = "Hasnain-rdj/FineTuned_ImageClassification_Project"
+    RELEASE_TAG = "v1.0.0"
+    MODEL_FILENAME = "final_model.pkl"
+    release_url = f"https://github.com/{GITHUB_REPO}/releases/download/{RELEASE_TAG}/{MODEL_FILENAME}"
     
-    st.info("📥 Downloading model from GitHub Release (this may take a few minutes - ~340MB)...")
+    st.info(f"📥 Downloading model from GitHub Release {RELEASE_TAG}...")
+    st.info(f"File size: ~330 MB (this may take 2-5 minutes depending on your connection)")
     
     try:
         import urllib.request
         
-        # Download with progress
-        def reporthook(count, block_size, total_size):
-            percent = int(count * block_size * 100 / total_size)
-            if count % 50 == 0:  # Update every 50 blocks to avoid too many updates
-                st.text(f"Download progress: {percent}%")
+        # Progress bar
+        progress_bar = st.progress(0)
+        status_text = st.empty()
         
+        # Download with progress tracking
+        def reporthook(block_num, block_size, total_size):
+            downloaded = block_num * block_size
+            percent = min(int(downloaded * 100 / total_size), 100)
+            progress_bar.progress(percent)
+            
+            # Convert bytes to MB
+            downloaded_mb = downloaded / (1024 * 1024)
+            total_mb = total_size / (1024 * 1024)
+            status_text.text(f"Downloaded: {downloaded_mb:.1f} MB / {total_mb:.1f} MB ({percent}%)")
+        
+        # Download the file
         urllib.request.urlretrieve(release_url, model_path, reporthook)
-        st.success("✅ Model downloaded successfully!")
+        
+        # Clear progress indicators
+        progress_bar.empty()
+        status_text.empty()
+        
+        st.success(f"✅ Model downloaded successfully! ({model_path.stat().st_size / (1024**2):.1f} MB)")
         return model_path
     
     except Exception as e:
-        st.error(f"Failed to download model: {str(e)}")
-        st.error("Please download manually from: https://github.com/Hasnain-rdj/FineTuned_ImageClassification_Project/releases")
+        st.error(f"❌ Failed to download model: {str(e)}")
+        st.error(f"Please download manually from: https://github.com/{GITHUB_REPO}/releases/tag/{RELEASE_TAG}")
+        st.info("After downloading, place the file in: final_model/final_model.pkl")
         st.stop()
 
 @st.cache_resource
